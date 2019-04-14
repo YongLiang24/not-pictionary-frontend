@@ -99,9 +99,6 @@ class Canvas extends React.Component {
           })
         })
 
-
-
-        console.log(this.state.movement)
     } else if (mouseAction === 'move' && this.state.flag) {
       this.setState(
         (state) => {
@@ -141,10 +138,10 @@ class Canvas extends React.Component {
     fetch(API)
     .then(resp => resp.json())
     .then(json =>{
-      console.log('check this json', json.data.movement)
+      //console.log('check this json', json.data.movement)
 
       for(let i=0; i <json.data.movement.previousX.length; i++){
-        console.log("i am",i)
+        // console.log("i am",i)
          this.state.ctx.beginPath();
 
          this.state.ctx.moveTo(json.data.movement.previousX[i], json.data.movement.previousY[i]);
@@ -159,10 +156,38 @@ class Canvas extends React.Component {
     })
   }
 
+// autoDraw = () =>{
+//   console.log("test setinterval")
+//   fetch(API)
+//   .then(resp => resp.json())
+//   .then(json=>{
+//     const canvas = document.getElementById('myCanvas');
+//     const ctx = canvas.getContext('2d');
+//     for(let i=0; i <json.data.movement.previousX.length; i++){
+//       // console.log("i am",i)
+//        ctx.beginPath();
+//        ctx.moveTo(json.data.movement.previousX[i], json.data.movement.previousY[i]);
+//        ctx.lineTo(json.data.movement.currentX[i], json.data.movement.currentY[i]);
+//        ctx.strokeStyle = 'black';
+//        ctx.lineWidth = 2;
+//        ctx.stroke();
+//        ctx.closePath();
+//      }
+//   })
+// }
+
+
+
+
   render() {
+
     return (
       <Fragment>
-        <input type="button" value="show drawing" onClick={this.handleRedraw}/>
+
+
+        {
+          this.props.isDrawing ? null : <input type="button" value="show drawing" onClick={this.handleRedraw}/>
+        }
         {
           this.props.isDrawing ?
             <canvas
@@ -172,9 +197,10 @@ class Canvas extends React.Component {
             onMouseUp={(event) => this.handleMouseMoves(event, 'up')}
             onMouseOut={(event) => this.handleMouseMoves(event, 'out')}
             />
+
           :
             <canvas
-              ref={this.canvasRef}
+              ref={this.canvasRef} id='myCanvas'
             />
         }
       </Fragment>
