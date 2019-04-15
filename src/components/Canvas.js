@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { ActionCable } from 'react-actioncable-provider';
+import { ActionCableConsumer } from 'react-actioncable-provider';
 import { API_ROOT, HEADERS } from '../constants';
 // import Cable from './Cable';
 
@@ -167,7 +167,7 @@ class Canvas extends React.Component {
     } else {
       return (
         <Fragment>
-          <ActionCable
+          <ActionCableConsumer
             channel={{channel: 'CanvasDrawingsChannel'}}
             onReceived={this.handleReceivedDrawing}
           />
