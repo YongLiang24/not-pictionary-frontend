@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { ActionCable } from 'react-actioncable-provider';
-import { API_ROOT } from '../constants';
+import { API_ROOT, HEADERS } from '../constants';
 // import Cable from './Cable';
 
 
@@ -16,6 +16,10 @@ class Canvas extends React.Component {
       currX: 0,
       prevY: 0,
       currY: 0,
+      prevXArray: [],
+      prevYArray: [],
+      currXArray: [],
+      currYArray: [],
       dot_flag: false,
       x: 'black',
       y: 2,
@@ -46,6 +50,26 @@ class Canvas extends React.Component {
     event.persist()
     console.log('moving the mouse', action, event)
     this.findxy(action, event)
+
+    if (action !== 'up') {this.sendDrawData()}
+
+    // post updated state to API
+  }
+
+  sendDrawData = () => {
+    const movement = {
+      prevXArray: this.state.prevXArray,
+      prevYArray: this.state.prevYArray,
+      currXArray: this.state.currXArray,
+      currYArray: this.state.currYArray,
+    }
+
+    fetch(API_ROOT + '/canvas', {
+      method: 'POST',
+      headers: HEADERS,
+      body: JSON.stringify(movement)
+    })
+      // .then(response)
   }
 
   findxy = (mouseAction, e) => {
@@ -93,32 +117,67 @@ class Canvas extends React.Component {
     this.state.ctx.beginPath();
     this.state.ctx.moveTo(this.state.prevX, this.state.prevY);
     this.state.ctx.lineTo(this.state.currX, this.state.currY);
-    this.state.ctx.strokeStyle = this.state.x;
-    this.state.ctx.lineWidth = this.state.y;
+    this.state.ctx.strokeStyle = this.state.x; // update to not mutate state directly
+    this.state.ctx.lineWidth = this.state.y; // update to not mutate state directly
     this.state.ctx.stroke();
     this.state.ctx.closePath();
+
+    // store all
+    const prevXArray = this.state.prevXArray.slice()
+    prevXArray.push(this.state.prevX)
+    const prevYArray = this.state.prevYArray.slice()
+    prevYArray.push(this.state.prevY)
+    const currXArray = this.state.currXArray.slice()
+    currXArray.push(this.state.currX)
+    const currYArray = this.state.currYArray.slice()
+    currYArray.push(this.state.currY)
+
+    this.setState({prevXArray, prevYArray, currXArray, currYArray})
+
+  }
+
+  handleReceivedDrawing = response => {
+    console.log('receiving drawing info', response)
+    // this.draw(response)
+    for(let i=0; i < response.currXArray.length; i++) {
+      this.state.ctx.beginPath();
+      this.state.ctx.moveTo(response.prevXArray[i], response.prevYArray[i]);
+      this.state.ctx.lineTo(response.currXArray[i], response.currYArray[i]);
+      this.state.ctx.strokeStyle = this.state.x;
+      this.state.ctx.lineWidth = this.state.y;
+      this.state.ctx.stroke();
+      this.state.ctx.closePath();
+    }
+
   }
 
   render() {
-    return (
-      <Fragment>
-        {
-          this.props.isDrawing ?
-
-            <canvas
+    if (this.props.isDrawing) {
+      return (
+        <Fragment>
+          <canvas
+           ref={this.canvasRef}
+           onMouseMove={(event) => this.handleMouseMoves(event, 'move')}
+           onMouseDown={(event) => this.handleMouseMoves(event, 'down')}
+           onMouseUp={(event) => this.handleMouseMoves(event, 'up')}
+           onMouseOut={(event) => this.handleMouseMoves(event, 'out')}
+         />
+        </Fragment>
+      )
+    } else {
+      return (
+        <Fragment>
+          <ActionCable
+            channel={{channel: 'CanvasDrawingsChannel'}}
+            onReceived={this.handleReceivedDrawing}
+          />
+          <canvas
             ref={this.canvasRef}
-            onMouseMove={(event) => this.handleMouseMoves(event, 'move')}
-            onMouseDown={(event) => this.handleMouseMoves(event, 'down')}
-            onMouseUp={(event) => this.handleMouseMoves(event, 'up')}
-            onMouseOut={(event) => this.handleMouseMoves(event, 'out')}
-            />
-          :
-            <canvas
-              ref={this.canvasRef}
-            />
-        }
-      </Fragment>
-    );
+          />
+        </Fragment>
+      )
+    }
+
   }}
 
 export default Canvas;
