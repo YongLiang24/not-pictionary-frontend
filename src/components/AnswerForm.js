@@ -3,7 +3,7 @@ import React, { Component, Fragment } from 'react';
 const AnswerForm = (props) =>{
     return(
       <div>
-        <form onSubmit={props.handleAnswerForm}>
+        <form onSubmit={props.handleForm}>
           <label>Your Answer:
             <input type='text' name='answer' />
           </label>

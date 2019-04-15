@@ -1,8 +1,6 @@
 import React, { Component, Fragment } from 'react';
-import Canvas from './Canvas';
-import NewGuessForm from './NewGuessForm';
-import AnswerForm from './AnswerForm';
-
+import Canvas from '../components/Canvas';
+import PlayerInteraction from './PlayerInteraction'
 class GameView extends Component{
   constructor(props){
     super(props)
@@ -13,7 +11,7 @@ class GameView extends Component{
       return(
         <Fragment>
           <Canvas isDrawing={true}/>
-          <AnswerForm />
+          <PlayerInteraction isDrawing={true} />
         </Fragment>
       )
     }
@@ -21,7 +19,7 @@ class GameView extends Component{
       return(
         <Fragment>
           <Canvas isDrawing={false} />
-          <NewGuessForm />
+          <PlayerInteraction isDrawing={false} />
         </Fragment>
       )
     }
