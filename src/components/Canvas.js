@@ -121,16 +121,17 @@ class Canvas extends React.Component {
     this.state.ctx.moveTo(this.state.prevX, this.state.prevY);
     this.state.ctx.lineTo(this.state.currX, this.state.currY);
     //get movement datas into an object of arrays
-    this.state.prevxArray.push(this.state.prevX);
-    this.state.prevyArray.push(this.state.prevY);
-    this.state.currentxArray.push(this.state.currX);
-    this.state.currentyArray.push(this.state.currY);
+
     //end
     this.state.ctx.strokeStyle = this.state.x;
     this.state.ctx.lineWidth = this.state.y;
     this.state.ctx.stroke();
     this.state.ctx.closePath();
     //console.log("check calls")
+    this.state.prevxArray.push(this.state.prevX);
+    this.state.prevyArray.push(this.state.prevY);
+    this.state.currentxArray.push(this.state.currX);
+    this.state.currentyArray.push(this.state.currY);
 
   }
 
@@ -156,35 +157,10 @@ class Canvas extends React.Component {
     })
   }
 
-// autoDraw = () =>{
-//   console.log("test setinterval")
-//   fetch(API)
-//   .then(resp => resp.json())
-//   .then(json=>{
-//     const canvas = document.getElementById('myCanvas');
-//     const ctx = canvas.getContext('2d');
-//     for(let i=0; i <json.data.movement.previousX.length; i++){
-//       // console.log("i am",i)
-//        ctx.beginPath();
-//        ctx.moveTo(json.data.movement.previousX[i], json.data.movement.previousY[i]);
-//        ctx.lineTo(json.data.movement.currentX[i], json.data.movement.currentY[i]);
-//        ctx.strokeStyle = 'black';
-//        ctx.lineWidth = 2;
-//        ctx.stroke();
-//        ctx.closePath();
-//      }
-//   })
-// }
-
-
-
-
   render() {
 
     return (
       <Fragment>
-
-
         {
           this.props.isDrawing ? null : <input type="button" value="show drawing" onClick={this.handleRedraw}/>
         }
@@ -197,7 +173,6 @@ class Canvas extends React.Component {
             onMouseUp={(event) => this.handleMouseMoves(event, 'up')}
             onMouseOut={(event) => this.handleMouseMoves(event, 'out')}
             />
-
           :
             <canvas
               ref={this.canvasRef} id='myCanvas'
