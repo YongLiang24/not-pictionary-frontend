@@ -24,7 +24,8 @@ class Canvas extends React.Component {
       x: 'black',
       y: 2,
       width: 400, // make this a prop
-      height: 400 // make this a prop
+      height: 400, // make this a prop
+      // guessAnswer: ''
     }
   }
 
@@ -48,7 +49,7 @@ class Canvas extends React.Component {
 
   handleMouseMoves = (event, action) => {
     event.persist()
-    console.log('moving the mouse', action, event)
+    //console.log('moving the mouse', action, event)
     this.findxy(action, event)
 
     if (action !== 'up') {this.sendDrawData()}
@@ -137,7 +138,7 @@ class Canvas extends React.Component {
   }
 
   handleReceivedDrawing = response => {
-    console.log('receiving drawing info', response)
+    //console.log('receiving drawing info', response)
     // this.draw(response)
     for(let i=0; i < response.currXArray.length; i++) {
       this.state.ctx.beginPath();
@@ -150,6 +151,16 @@ class Canvas extends React.Component {
     }
 
   }
+
+// handleGuessForm = (ev)=>{
+//   ev.preventDefault()
+//   //console.log(ev.target.guess.value)
+//   this.setState({
+//     guessAnswer: ev.target.guess.value
+//   })
+// }
+
+
 
   render() {
     if (this.props.isDrawing) {

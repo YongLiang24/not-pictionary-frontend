@@ -1,18 +1,13 @@
 import React, { Component, Fragment } from 'react';
-import logo from './logo.svg';
 import './App.css';
-import Canvas from './components/Canvas'
+import GameView from './containers/GameView'
 
 class App extends Component {
   render() {
     return (
       <Fragment>
-        <Canvas
-          isDrawing={true}
-        />
-        <Canvas
-          isDrawing={false}
-        />
+        <GameView isDrawing = {true}/>
+        <GameView isDrawing = {false}/>
       </Fragment>
     );
   }
