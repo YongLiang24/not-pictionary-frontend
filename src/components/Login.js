@@ -23,19 +23,19 @@ class Login extends Component {
       .then(response => response.json())
       .then(json => {
         const player = {name: json.name, id: json.id}
+        console.log('before setting state')
         this.setState({
           playerName: player.name,
           playerId: player.id,
           redirect: true
-        })
+        }, () => console.log('we set state'))
       })
   }
 
   renderRedirect = () => {
-    // console.log('redirecting', JSON.parse(localStorage.getItem('playerData')))
     if (this.state.redirect) {
       localStorage.setItem('playerData', JSON.stringify(this.state))
-      return <Redirect to='/joingame'/>
+      return <Redirect to='/games'/>
     }
   }
 

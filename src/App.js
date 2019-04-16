@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import './App.css';
 import {BrowserRouter as Router, Route, NavLink} from 'react-router-dom';
 
-import HomePage from './components/HomePage';
+import GamesPage from './components/GamesPage';
 import GameView from './containers/GameView'
 import Login from './components/Login'
 
@@ -12,13 +12,13 @@ class App extends Component {
       <Fragment>
       <Router>
         <Route exact path="/" component={Login}/>
-        <Route exact path="/joingame" component={HomePage}/>
+        <Route exact path="/games" component={GamesPage}/>
         <Route
-          exact path="/draw"
+          exact path="/:id/draw"
           component={()=> <GameView isDrawing = {true}/>}
         />
         <Route
-          exact path="/guess"
+          exact path="/:id/guess"
           component={()=> <GameView isDrawing = {false}/>}
         />
       </Router>
