@@ -29,7 +29,7 @@ class HomePage extends Component{
   render(){
     return(
       <div>
-        <div hidden>
+        <div >
           <div id='drawRole' >
             Game Name:
             <form onSubmit={this.handleAddGames} action="http://localhost:3001/draw" target='_blank'>
