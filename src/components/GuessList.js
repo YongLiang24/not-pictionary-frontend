@@ -1,13 +1,10 @@
 import React, { Component, Fragment } from 'react';
 
-class GuessList extends Component{
-  render(){
+const GuessList = (props) =>{
     return(
       <div>
-        <ul>
-        </ul>
+      <li>{props.inputList} </li>
       </div>
     )
-  }
 }
 export default GuessList
