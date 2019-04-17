@@ -10,7 +10,7 @@ class GuessList extends Component {
       rejectedGuesses: []
      }
    }
-<<<<<<< HEAD
+
  }
 
  componentDidMount(){

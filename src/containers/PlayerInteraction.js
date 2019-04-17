@@ -20,28 +20,6 @@ const PlayerInteraction = (props) => {
     })
   }
 
-<<<<<<< HEAD
-
-
-  }
-    if(props.isDrawing){
-      return(
-        <Fragment>
-          <AnswerForm handleForm={handleForm}/>
-          <GuessList gameId={props.gameId} />
-
-        </Fragment>
-      )
-    }
-    else{
-      return(
-        <Fragment>
-          <NewGuessForm  handleForm={handleForm}/>
-          <GuessList gameId={props.gameId} />
-        </Fragment>
-      )
-    }
-=======
   if (props.isDrawing) {
     return (
       <Fragment>
@@ -58,7 +36,6 @@ const PlayerInteraction = (props) => {
       </Fragment>
     )
   }
->>>>>>> 2dad57a74801d46e669c68ac070bf106fd045f1c
 }
 
 export default PlayerInteraction;
