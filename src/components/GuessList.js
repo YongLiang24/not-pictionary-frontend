@@ -37,7 +37,7 @@ render(){
     </div>
   )
 }
-=======
+
 
   componentDidMount() {
      fetch(API_ROOT+`/game/${this.props.gameId}`)
@@ -145,7 +145,7 @@ render(){
     }
   }
 
->>>>>>> 2dad57a74801d46e669c68ac070bf106fd045f1c
+
 
 }
 export default GuessList
