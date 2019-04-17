@@ -59,6 +59,7 @@ class Canvas extends React.Component {
 
   sendDrawData = () => {
     const movement = {
+      currentGameId: this.props.gameId,
       prevXArray: this.state.prevXArray,
       prevYArray: this.state.prevYArray,
       currXArray: this.state.currXArray,
@@ -179,7 +180,7 @@ class Canvas extends React.Component {
       return (
         <Fragment>
           <ActionCableConsumer
-            channel={{channel: 'CanvasDrawingsChannel'}}
+            channel={{channel: 'CanvasDrawingsChannel', id:`${this.props.gameId}`}}
             onReceived={this.handleReceivedDrawing}
           />
           <canvas
