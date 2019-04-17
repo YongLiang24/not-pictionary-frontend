@@ -5,7 +5,7 @@ const Cable = () => {
   return (
     <Fragment>
       <ActionCable
-        
+
       />
     </Fragment>
   )

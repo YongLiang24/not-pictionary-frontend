@@ -15,11 +15,11 @@ class App extends Component {
         <Route exact path="/games" component={GamesPage}/>
         <Route
           exact path="/:id/draw"
-          render={()=> <GameView isDrawing = {true}/>}
+          render={(props)=> <GameView gameId={props.match.params.id} isDrawing = {true}/>}
         />
         <Route
           exact path="/:id/guess"
-          render={()=> <GameView isDrawing = {false}/>}
+          render={(props)=> <GameView gameId={props.match.params.id} isDrawing = {false}/>}
         />
       </Router>
       </Fragment>

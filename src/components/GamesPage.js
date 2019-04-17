@@ -7,7 +7,8 @@ class GamesPage extends Component {
     availableGames: [],
     gameName: '',
     redirect: false,
-    currentGameId: ''
+    currentGameId: '',
+    currentGameMode: ''
   }
 
   componentDidMount() {
@@ -18,8 +19,10 @@ class GamesPage extends Component {
         availableGames: json}))
   }
 
+  // add websocket listener to pull in new created games
+
   handleAddGames = (ev) =>{
-    // ev.preventDefault()
+    ev.preventDefault()
     // let newGameArray = this.state.availableGames.slice()
     // let input = ev.target.createGame.value
     // if(!newGameArray.includes(input)){
@@ -35,7 +38,27 @@ class GamesPage extends Component {
     //   gameName: input
     // })
     console.log('adding new game')
+    const playerId = JSON.parse(localStorage.getItem('playerData')).playerId
+    const gameName = ev.target.createGame.value
 
+    fetch(`${API_ROOT}/game`, {
+      method: 'POST',
+      headers: HEADERS,
+      body: JSON.stringify({playerId, gameName})
+    })
+      .then(response => response.json())
+      .then(json => {
+        this.setState({
+          redirect:true,
+          currentGameId: json.id,
+          currentGameMode: 'draw'
+        })
+      })
+      // .then(
+      //   this.setState({
+      //     redirect:true,
+      //     currentGameId: gameId
+      // }))
   }
 
   handleJoiningGame = (ev) => {
@@ -48,15 +71,17 @@ class GamesPage extends Component {
       headers: HEADERS,
       body: JSON.stringify({playerId})
     })
-      .then(this.setState({
-        redirect:true,
-        currentGameId: gameId
+      .then(
+        this.setState({
+          redirect:true,
+          currentGameId: gameId,
+          currentGameMode: 'guess'
       }))
   }
 
   renderRedirect = () => {
     if (this.state.redirect) {
-      return <Redirect to={`/${this.state.currentGameId}/guess`}/>
+      return <Redirect to={`/${this.state.currentGameId}/${this.state.currentGameMode}`}/>
     }
   }
 
@@ -64,23 +89,22 @@ class GamesPage extends Component {
     return (
       <Fragment>
         {this.renderRedirect()}
-        <div >
-          <div id='drawRole' >
-            Game Name:
-            <form onSubmit={this.handleAddGames} action="http://localhost:3001/draw" target='_blank'>
-              <input type='text' placeholder='game name' name='createGame' required/>
-              <input type='submit' value='create game' />
-            </form>
-          </div>
-          Available Games:
-          <ul>
-            {this.state.availableGames.map(game => {
-              return (
-                <li
-                  key={game.id}
-                  value={game}
-                >
-                  Game: {game.id}
+
+        Game Name:
+        <form onSubmit={this.handleAddGames} >
+          <input type='text' placeholder='game name' name='createGame' required/>
+          <input type='submit' value='create game' />
+        </form>
+        Available Games:
+        <ul>
+          {this.state.availableGames.map(game => {
+            return (
+              <li
+                key={game.id}
+                value={game}
+              >
+                Game: {game.id}
+                  Name: {game.name}
                   <p>Drawer: {game.drawer_id}</p>
                   <button
                     id={game.id}
@@ -95,7 +119,6 @@ class GamesPage extends Component {
             })
             }
           </ul>
-        </div>
       </Fragment>
     )
   }

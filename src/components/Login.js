@@ -28,7 +28,7 @@ class Login extends Component {
           playerName: player.name,
           playerId: player.id,
           redirect: true
-        }, () => console.log('we set state'))
+        })
       })
   }
 
