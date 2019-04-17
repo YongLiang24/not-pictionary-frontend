@@ -15,11 +15,11 @@ class App extends Component {
         <Route exact path="/games" component={GamesPage}/>
         <Route
           exact path="/:id/draw"
-          component={()=> <GameView isDrawing = {true}/>}
+          render={()=> <GameView isDrawing = {true}/>}
         />
         <Route
           exact path="/:id/guess"
-          component={()=> <GameView isDrawing = {false}/>}
+          render={()=> <GameView isDrawing = {false}/>}
         />
       </Router>
       </Fragment>
