@@ -18,6 +18,7 @@ const PlayerInteraction = (props) => {
       headers: HEADERS,
       body: JSON.stringify({[formType]: formValue, playerId})
     })
+    console.log('guessFormClick')
   }
 
   if (props.isDrawing) {

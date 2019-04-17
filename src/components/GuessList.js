@@ -11,56 +11,29 @@ class GuessList extends Component {
      }
    }
 
- }
-
- componentDidMount(){
-   fetch(API_ROOT+`/game/${this.props.gameId}`)
-   .then(resp => resp.json())
-   .then(json =>{
-     this.setState({
-       guessList: json
-     })
-     console.log("game",json)
-   })
- }
-render(){
-  return(
-    <div>
-      <ul>
-        {
-          this.state.guessList.map((guess, index) =>{
-            return <li key={index}>{guess}</li>
-          })
-        }
-
-      </ul>
-    </div>
-  )
-}
-
-
   componentDidMount() {
      fetch(API_ROOT+`/game/${this.props.gameId}`)
      .then(resp => resp.json())
      .then(json => {
+       if (json) {
        this.setState({
          guessList: json,
          rejectedGuesses: json
-       })
+       })}
      })
    }
 
   handleClick = (ev) => {
-     ev.persist()
+     // ev.persist()
      const guessIdx = ev.target.id
      const guessAction = ev.target.name
      const guessText = ev.target.value
-     // console.log(ev, guessIdx, guessAction, guess)
+     const type = 'rejectGuess'
 
      fetch(API_ROOT+`/game/${this.props.gameId}`,{
        method: 'PATCH',
        headers: HEADERS,
-       body: JSON.stringify({guessIdx, guessAction, guessText})
+       body: JSON.stringify({guessIdx, guessAction, guessText, type})
      })
       .then(response => response.json())
       .then(json => {
@@ -79,11 +52,6 @@ render(){
       this.setState(prevState => ({
         guessList: [...prevState.guessList, response.guess],
       }))
-    } else {
-      // console.log('receive rejection')
-      // this.setState(prevState => ({
-        // rejectedGuesses: [...prevState.rejectedGuesses, prevState.guessList[response.guessIdx]]
-      // }))
     }
   }
 
@@ -99,7 +67,7 @@ render(){
       return (
         <Fragment>
           <ActionCableConsumer
-            channel={{channel: 'GuessesChannel', id:`${this.props.gameId}`}}
+            channel={{channel: 'GameFormChannel', id:`${this.props.gameId}`}}
             onReceived={this.handleReceivedGuess}
           />
           <ul>
@@ -132,7 +100,10 @@ render(){
       return (
         <Fragment>
           <ActionCableConsumer
-            channel={{channel: 'GuessesChannel', id:`${this.props.gameId}`}}
+            channel={{
+              channel: 'GuessesChannel',
+              id:`${this.props.gameId}`
+            }}
             onReceived={this.handleReceivedReject}
           />
           <ul>
@@ -144,8 +115,6 @@ render(){
       )
     }
   }
-
-
-
 }
+
 export default GuessList
