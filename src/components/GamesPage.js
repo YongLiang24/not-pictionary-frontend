@@ -49,7 +49,7 @@ class GamesPage extends Component {
       .then(response => response.json())
       .then(json => {
         this.setState({
-          redirect:true,
+          redirect: true,
           currentGameId: json.id,
           currentGameMode: 'draw'
         })
