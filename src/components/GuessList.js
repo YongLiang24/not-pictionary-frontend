@@ -12,16 +12,23 @@ class GuessList extends Component{
    fetch(API_ROOT+`/game/${this.props.gameId}`)
    .then(resp => resp.json())
    .then(json =>{
-     // this.setState({
-     //   guessList: json
-     // })
+     this.setState({
+       guessList: json
+     })
      console.log("game",json)
    })
  }
 render(){
   return(
     <div>
-    <li>{this.props.inputList} </li>
+      <ul>
+        {
+          this.state.guessList.map((guess, index) =>{
+            return <li key={index}>{guess}</li>
+          })
+        }
+
+      </ul>
     </div>
   )
 }

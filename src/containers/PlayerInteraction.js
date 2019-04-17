@@ -17,12 +17,15 @@ const PlayerInteraction = (props) =>{
       body: JSON.stringify({[formType]: formValue, playerId})
     })
 
+
+
   }
     if(props.isDrawing){
       return(
         <Fragment>
           <AnswerForm handleForm={handleForm}/>
           <GuessList gameId={props.gameId} />
+
         </Fragment>
       )
     }
