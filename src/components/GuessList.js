@@ -21,6 +21,7 @@ class GuessList extends Component {
          rejectedGuesses: json
        })}
      })
+
    }
 
   handleClick = (ev) => {
@@ -43,7 +44,12 @@ class GuessList extends Component {
           })
         )}
       })
+    
+   }
 
+   playerHasWon = () =>{
+     console.log("winniner log")
+     alert("this player has won. ")
    }
 
   handleReceivedGuess = (response) => {
@@ -61,6 +67,7 @@ class GuessList extends Component {
       rejectedGuesses: [...prevState.rejectedGuesses, response.guessText]
     }))
   }
+
 
   render() {
     if (this.props.isDrawing) {
@@ -99,6 +106,7 @@ class GuessList extends Component {
     } else {
       return (
         <Fragment>
+
           <ActionCableConsumer
             channel={{
               channel: 'GuessesChannel',

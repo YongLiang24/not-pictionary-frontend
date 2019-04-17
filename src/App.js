@@ -7,6 +7,8 @@ import GameView from './containers/GameView'
 import Login from './components/Login'
 
 class App extends Component {
+
+
   render() {
     return (
       <Fragment>

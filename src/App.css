@@ -31,3 +31,83 @@
     transform: rotate(360deg);
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#timerBox {
+  border: solid #BF6741;
+  width: 200px;
+  height: auto;
+  text-align: center;
+}
+#timerButton{
+/* border: outset; */
+background-color: lavender;
+}
+#timerButton:hover {
+  background-color: CornflowerBlue ; /* Green */
+  color: white;
+}
