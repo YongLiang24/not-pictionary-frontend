@@ -15,24 +15,25 @@ class GuessList extends Component {
      fetch(API_ROOT+`/game/${this.props.gameId}`)
      .then(resp => resp.json())
      .then(json => {
+       if (json) {
        this.setState({
          guessList: json,
          rejectedGuesses: json
-       })
+       })}
      })
    }
 
   handleClick = (ev) => {
-     ev.persist()
+     // ev.persist()
      const guessIdx = ev.target.id
      const guessAction = ev.target.name
      const guessText = ev.target.value
-     // console.log(ev, guessIdx, guessAction, guess)
+     const type = 'rejectGuess'
 
      fetch(API_ROOT+`/game/${this.props.gameId}`,{
        method: 'PATCH',
        headers: HEADERS,
-       body: JSON.stringify({guessIdx, guessAction, guessText})
+       body: JSON.stringify({guessIdx, guessAction, guessText, type})
      })
       .then(response => response.json())
       .then(json => {
@@ -51,11 +52,6 @@ class GuessList extends Component {
       this.setState(prevState => ({
         guessList: [...prevState.guessList, response.guess],
       }))
-    } else {
-      // console.log('receive rejection')
-      // this.setState(prevState => ({
-        // rejectedGuesses: [...prevState.rejectedGuesses, prevState.guessList[response.guessIdx]]
-      // }))
     }
   }
 
@@ -71,7 +67,7 @@ class GuessList extends Component {
       return (
         <Fragment>
           <ActionCableConsumer
-            channel={{channel: 'GuessesChannel', id:`${this.props.gameId}`}}
+            channel={{channel: 'GameFormChannel', id:`${this.props.gameId}`}}
             onReceived={this.handleReceivedGuess}
           />
           <ul>
@@ -104,7 +100,10 @@ class GuessList extends Component {
       return (
         <Fragment>
           <ActionCableConsumer
-            channel={{channel: 'GuessesChannel', id:`${this.props.gameId}`}}
+            channel={{
+              channel: 'GuessesChannel',
+              id:`${this.props.gameId}`
+            }}
             onReceived={this.handleReceivedReject}
           />
           <ul>
@@ -116,7 +115,6 @@ class GuessList extends Component {
       )
     }
   }
-
-
 }
+
 export default GuessList
