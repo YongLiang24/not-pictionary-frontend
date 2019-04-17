@@ -4,7 +4,7 @@ const NewGuessForm = (props) =>{
 
     return(
       <div>
-        <form onSubmit={props.handleForm}>
+        <form onSubmit={props.handleForm} name="guess">
           <label>Your Guess:
             <input type='text' name='guess' />
           </label>

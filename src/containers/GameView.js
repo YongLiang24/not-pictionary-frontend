@@ -12,7 +12,7 @@ class GameView extends Component {
       return (
         <Fragment>
           <Canvas gameId={this.props.gameId} isDrawing={true}/>
-          <PlayerInteraction isDrawing={true} />
+          <PlayerInteraction gameId={this.props.gameId} isDrawing={true} />
         </Fragment>
       )
     }
@@ -20,7 +20,7 @@ class GameView extends Component {
       return (
         <Fragment>
           <Canvas gameId={this.props.gameId} isDrawing={false} />
-          <PlayerInteraction isDrawing={false} />
+          <PlayerInteraction gameId={this.props.gameId} isDrawing={false} />
         </Fragment>
       )
     }
