@@ -41,16 +41,17 @@ class Login extends Component {
 
   render() {
     return (
-      <Fragment>
+      <div className='login'>
         {this.renderRedirect()}
-        <h3>Welcome to Not-Pictionary</h3>
+        <h1>Welcome to Not-Pictionary</h1>
+        <h4><em>Draw with your friends... or strangers!</em></h4>
         <form onSubmit={this.handleForm}>
           <label>Player Name:
             <input type='text' name='login' required/>
           </label>
-          <input type='submit' value='Submit' />
+          <input type='submit' value='Play!' />
         </form>
-      </Fragment>
+      </div>
     )
   }
 }

@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import NewGuessForm from '../components/NewGuessForm';
 import AnswerForm from '../components/AnswerForm';
 import GuessList from '../components/GuessList';
