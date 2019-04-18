@@ -29,7 +29,7 @@ class GameView extends Component {
       // alert(`Game Over. You ran out of time!`)
     } else if (endCondition === 'rightAnswer') {
       endingState.is_won = true
-      alert(`You win!`)
+      // alert(`You win!`)
     }
 
     fetch(API_ROOT+`/game/${this.props.gameId}`,{

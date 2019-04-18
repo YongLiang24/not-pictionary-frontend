@@ -153,16 +153,6 @@ class Canvas extends React.Component {
 
   }
 
-// handleGuessForm = (ev)=>{
-//   ev.preventDefault()
-//   //console.log(ev.target.guess.value)
-//   this.setState({
-//     guessAnswer: ev.target.guess.value
-//   })
-// }
-
-
-
   render() {
     if (this.props.isDrawing) {
       return (

@@ -38,9 +38,9 @@ class Timer extends Component{
         minutes: 0
       })
 
-      setTimeout(alert("Time's Up, Click 'Ok' to end the game"), 3000)
+      // setTimeout(alert("Time's Up, Click 'Ok' to end the game"), 3000)
       clearInterval(this.state.interval)
-      window.location = 'http://localhost:3001/games'
+      // window.location = 'http://localhost:3001/games'
     }
 
     if(this.state.seconds === 0){
