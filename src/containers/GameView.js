@@ -42,6 +42,8 @@ class GameView extends Component {
           <Timer
             gameOver={this.state.gameOver}
             endGame={this.endGame}
+            gameId={this.props.gameId}
+            withButton={true}
           />
           <Canvas gameId={this.props.gameId} isDrawing={true}/>
           <PlayerInteraction
@@ -60,6 +62,8 @@ class GameView extends Component {
           <Timer
             gameOver={this.state.gameOver}
             endGame={this.endGame}
+            gameId={this.props.gameId}
+            withButton={false}
           />
           <Canvas gameId={this.props.gameId} isDrawing={false} />
           <PlayerInteraction
