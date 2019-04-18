@@ -57,7 +57,7 @@ class GuessList extends Component {
     }
   }
 
-  handleReceivedReject = (response) => {
+  handleReceivedGuessStatus = (response) => {
     console.log('receive rejection', response)
     if (response.message === 'Correct!') {
       this.props.endGame('rightAnswer')
@@ -70,12 +70,13 @@ class GuessList extends Component {
 
   render() {
     if (this.props.isDrawing) {
+      this.acc || (this.acc = <ActionCableConsumer
+        channel={{channel: 'GameFormChannel', id:`${this.props.gameId}`}}
+        onReceived={this.handleReceivedGuess}
+        />)
       return (
         <Fragment>
-          <ActionCableConsumer
-            channel={{channel: 'GameFormChannel', id:`${this.props.gameId}`}}
-            onReceived={this.handleReceivedGuess}
-          />
+          {this.acc}
           <h4>Guess List</h4>
           <ul>
             {this.state.guessList.map((guess, idx) => {
@@ -104,16 +105,17 @@ class GuessList extends Component {
         </Fragment>
       )
     } else {
+      this.acc || (this.acc = <ActionCableConsumer
+        channel={{
+          channel: 'GuessesChannel',
+          id:`${this.props.gameId}`
+        }}
+        onReceived={this.handleReceivedGuessStatus}
+        />)
       return (
         <Fragment>
-          <ActionCableConsumer
-            channel={{
-              channel: 'GuessesChannel',
-              id:`${this.props.gameId}`
-            }}
-            onReceived={this.handleReceivedReject}
-          />
-          <h4>Guess List</h4>
+          {this.acc}
+          <h4>Rejected Guess List</h4>
           <ul>
             {this.state.rejectedGuesses.map((guess, idx) => {
               return <li key={idx} style={{textDecoration: 'line-through'}}>{guess}</li>

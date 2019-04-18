@@ -19,7 +19,7 @@ class GameView extends Component {
     this.setState({gameOver: true})
     // patch to game/:id to change isAvailable to false
     if (endCondition === 'timeUp') {
-      alert(`Game Over. You ran out of time!`)
+      // alert(`Game Over. You ran out of time!`)
     } else if (endCondition === 'rightAnswer') {
       alert(`You win!`)
     }
@@ -65,6 +65,7 @@ class GameView extends Component {
           <PlayerInteraction
             gameId={this.props.gameId}
             isDrawing={false}
+            endGame={this.endGame}
           />
         </Fragment>
       )

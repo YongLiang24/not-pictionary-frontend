@@ -16,9 +16,9 @@ class Timer extends Component{
     clickedButton.disabled = true;
   }
 
-  timer = ()=>{
+  timer = () => {
     let tempSeconds = this.state.seconds
-    if(this.state.minutes >0){
+    if (this.state.minutes > 0) {
       this.setState({
         seconds: tempSeconds -1
       })
@@ -29,24 +29,24 @@ class Timer extends Component{
       this.props.endGame('timeUp')
     }
 
-    if(this.state.seconds === 0){
+    if (this.state.seconds === 0) {
       let tempMinutes = this.state.minutes
       this.setState({
         seconds: 59,
-        minutes: tempMinutes -1
+        minutes: tempMinutes - 1
       })
     }
   }
 
-  render(){
-    return(
-      <>
+  render() {
+    return (
+      <Fragment>
         <div id="timerBox"><strong>Timer: {this.state.minutes} : {this.state.seconds}</strong>
           {" "}
           <button id='timerButton' ref='timerButton' onClick={this.startTimer}><strong>Start</strong></button>
         </div>
 
-      </>
+      </Fragment>
     )
   }
 }

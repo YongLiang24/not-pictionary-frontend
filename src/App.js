@@ -13,15 +13,33 @@ class App extends Component {
       <Fragment>
       <Router>
         <Route exact path="/" component={Login}/>
-        <TopNav />
-        <Route exact path="/games" component={GamesPage}/>
+        <Route
+          exact path="/games"
+          // component={GamesPage}
+          render={() => (
+            <Fragment>
+              <TopNav />
+              <GamesPage />
+            </Fragment>
+          )}
+        />
         <Route
           exact path="/:id/draw"
-          render={(props)=> <GameView gameId={props.match.params.id} isDrawing = {true}/>}
+          render={(props)=> (
+            <Fragment>
+              <TopNav />
+              <GameView gameId={props.match.params.id} isDrawing = {true}/>
+            </Fragment>
+          )}
         />
         <Route
           exact path="/:id/guess"
-          render={(props)=> <GameView gameId={props.match.params.id} isDrawing = {false}/>}
+          render={(props) => (
+            <Fragment>
+              <TopNav />
+              <GameView gameId={props.match.params.id} isDrawing = {false}/>
+            </Fragment>
+          )}
         />
       </Router>
       </Fragment>
