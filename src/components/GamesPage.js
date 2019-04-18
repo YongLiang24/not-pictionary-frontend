@@ -23,20 +23,6 @@ class GamesPage extends Component {
 
   handleAddGames = (ev) =>{
     ev.preventDefault()
-    // let newGameArray = this.state.availableGames.slice()
-    // let input = ev.target.createGame.value
-    // if(!newGameArray.includes(input)){
-    //   newGameArray.push(input)
-    // }
-    // else{
-    //   ev.preventDefault()
-    //   alert('This name already exist.')
-    // }
-    //
-    // this.setState({
-    //   availableGames: newGameArray,
-    //   gameName: input
-    // })
     console.log('adding new game')
     const playerId = JSON.parse(localStorage.getItem('playerData')).playerId
     const gameName = ev.target.createGame.value
@@ -54,11 +40,6 @@ class GamesPage extends Component {
           currentGameMode: 'draw'
         })
       })
-      // .then(
-      //   this.setState({
-      //     redirect:true,
-      //     currentGameId: gameId
-      // }))
   }
 
   handleJoiningGame = (ev) => {
@@ -95,30 +76,31 @@ class GamesPage extends Component {
           <input type='text' placeholder='game name' name='createGame' required/>
           <input type='submit' value='create game' />
         </form>
-        Available Games:
-        <ul>
+        <h3>Available Games:</h3>
+        <div className='game-card-container'>
           {this.state.availableGames.map(game => {
             return (
-              <li
+              <div
                 key={game.id}
                 value={game}
+                className='game-card'
               >
-                Game: {game.id}
-                  Name: {game.name}
-                  <p>Drawer: {game.drawer_id}</p>
-                  <button
-                    id={game.id}
-                    name={game.id}
-                    onClick={this.handleJoiningGame}
-                  >
-                    Join Game
-                  </button>
-                  {/* <a href={`http://localhost:3001/guess`} target="_blank">{game}</a>  */}
-                </li>
+                <h4>Game: {game.id}</h4>
+                <h4>Name: {game.name}</h4>
+                <p>Drawer: {game.drawer_id}</p>
+                <button
+                  id={game.id}
+                  name={game.id}
+                  onClick={this.handleJoiningGame}
+                  className='button'
+                >
+                  Join Game
+                </button>
+                </div>
               )
             })
             }
-          </ul>
+          </div>
       </Fragment>
     )
   }

@@ -1,10 +1,11 @@
 import React, { Component, Fragment } from 'react';
 import './App.css';
 import {BrowserRouter as Router, Route, NavLink} from 'react-router-dom';
-
 import GamesPage from './components/GamesPage';
 import GameView from './containers/GameView'
 import Login from './components/Login'
+import TopNav from './components/TopNav'
+
 
 class App extends Component {
   render() {
@@ -12,6 +13,7 @@ class App extends Component {
       <Fragment>
       <Router>
         <Route exact path="/" component={Login}/>
+        <TopNav />
         <Route exact path="/games" component={GamesPage}/>
         <Route
           exact path="/:id/draw"

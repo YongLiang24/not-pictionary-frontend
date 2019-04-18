@@ -3,8 +3,8 @@ import { API_ROOT, HEADERS } from '../constants';
 import { ActionCableConsumer } from 'react-actioncable-provider';
 
 class GuessList extends Component {
-  constructor() {
-     super()
+  constructor(props) {
+     super(props)
      this.state = {
       guessList: [],
       rejectedGuesses: []
@@ -28,7 +28,7 @@ class GuessList extends Component {
      const guessIdx = ev.target.id
      const guessAction = ev.target.name
      const guessText = ev.target.value
-     const type = 'rejectGuess'
+     const type = 'guessStatus'
 
      fetch(API_ROOT+`/game/${this.props.gameId}`,{
        method: 'PATCH',
@@ -41,7 +41,9 @@ class GuessList extends Component {
           this.setState(prevState => ({
             rejectedGuesses: [...prevState.rejectedGuesses, json.guessText]
           })
-        )}
+        )} else if (json.message == 'Correct!') {
+          this.props.endGame('rightAnswer')
+        }
       })
 
    }
@@ -57,9 +59,13 @@ class GuessList extends Component {
 
   handleReceivedReject = (response) => {
     console.log('receive rejection', response)
-    this.setState(prevState => ({
-      rejectedGuesses: [...prevState.rejectedGuesses, response.guessText]
-    }))
+    if (response.message === 'Correct!') {
+      this.props.endGame('rightAnswer')
+    } else if (response.message === 'Wrong!') {
+      this.setState(prevState => ({
+        rejectedGuesses: [...prevState.rejectedGuesses, response.guessText]
+      }))
+    }
   }
 
   render() {
@@ -70,6 +76,7 @@ class GuessList extends Component {
             channel={{channel: 'GameFormChannel', id:`${this.props.gameId}`}}
             onReceived={this.handleReceivedGuess}
           />
+          <h4>Guess List</h4>
           <ul>
             {this.state.guessList.map((guess, idx) => {
               return (
@@ -106,6 +113,7 @@ class GuessList extends Component {
             }}
             onReceived={this.handleReceivedReject}
           />
+          <h4>Guess List</h4>
           <ul>
             {this.state.rejectedGuesses.map((guess, idx) => {
               return <li key={idx} style={{textDecoration: 'line-through'}}>{guess}</li>

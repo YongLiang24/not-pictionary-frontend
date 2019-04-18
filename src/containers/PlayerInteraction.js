@@ -19,13 +19,20 @@ const PlayerInteraction = (props) => {
       headers: HEADERS,
       body: JSON.stringify({[formType]: formValue, playerId, type})
     })
+    .then(response => response.json())
+    .then(console.log('after patching from form'))
   }
 
   if (props.isDrawing) {
     return (
       <Fragment>
         <AnswerForm handleForm={handleForm}/>
-        <GuessList gameId={props.gameId} isDrawing={props.isDrawing} />
+        <GuessList
+          gameId={props.gameId}
+          isDrawing={props.isDrawing}
+          gameOver={props.gameOver}
+          endGame={props.endGame}
+        />
       </Fragment>
     )
   }
@@ -33,7 +40,12 @@ const PlayerInteraction = (props) => {
     return (
       <Fragment>
         <NewGuessForm handleForm={handleForm}/>
-        <GuessList gameId={props.gameId} isDrawing={props.isDrawing} />
+        <GuessList
+          gameId={props.gameId}
+          isDrawing={props.isDrawing}
+          gameOver={props.gameOver}
+          endGame={props.endGame}
+        />
       </Fragment>
     )
   }
