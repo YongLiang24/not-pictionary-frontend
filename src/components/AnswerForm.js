@@ -5,7 +5,7 @@ const AnswerForm = (props) =>{
       <div>
         <form onSubmit={props.handleForm} name='answer'>
           <label>Your Answer:
-            <input type='text' name='answer' />
+            <input type='text' name='answer'  required/>
           </label>
           <input type='submit' value='Send' />
         </form>

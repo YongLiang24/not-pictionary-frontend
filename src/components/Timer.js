@@ -5,14 +5,15 @@ import { ActionCableConsumer } from 'react-actioncable-provider';
 class Timer extends Component{
   state={
     seconds: 59,
-    minutes: 2,
+    minutes: 1,
     interval: ''
   }
 
   startTimer = (e)=>{
     this.state.interval = setInterval(this.timer, 1000)
-    let clickedButton = this.refs.timerButton
-    clickedButton.disabled = true;
+    // let clickedButton = this.refs.timerButton
+    // clickedButton.disabled = true;
+    console.log('checkStartTimer')
     const timer = {
       currentGameId: this.props.gameId
     }
@@ -32,10 +33,14 @@ class Timer extends Component{
       })
     }
     else{
+      this.setState({
+        seconds: 0,
+        minutes: 0
+      })
 
-      alert("Time's Up")
-
+      setTimeout(alert("Time's Up, Click 'Ok' to end the game"), 3000)
       clearInterval(this.state.interval)
+      window.location = 'http://localhost:3001/games'
     }
 
     if(this.state.seconds === 0){
@@ -57,9 +62,12 @@ class Timer extends Component{
     if(this.props.withButton){
       return(
         <>
+          <ActionCableConsumer
+            channel={{channel: 'TimerChannel', id:`${this.props.gameId}`}}
+            onReceived={this.handleReceivedTimer}
+          />
           <div id="timerBox">Timer: {this.state.minutes} : {this.state.seconds}
-            {" "}
-            <button id='timerButton' ref='timerButton' onClick={this.startTimer}><strong>Start</strong></button>
+
           </div>
         </>
       )
@@ -72,7 +80,6 @@ class Timer extends Component{
             onReceived={this.handleReceivedTimer}
           />
           <div id="timerBox">Timer: {this.state.minutes} : {this.state.seconds}
-
           </div>
         </>
       )
