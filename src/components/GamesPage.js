@@ -73,7 +73,7 @@ class GamesPage extends Component {
 
         Game Name:
         <form onSubmit={this.handleAddGames} >
-          <input type='text' placeholder='game name' name='createGame' required/>
+          <input type='text' placeholder='New game name.' name='createGame' required/>
           <input type='submit' value='create game' />
         </form>
         <h3>Available Games:</h3>
@@ -106,12 +106,3 @@ class GamesPage extends Component {
   }
 }
 export default GamesPage;
-
-// answer: "Pie"
-// created_at: "2019-04-16T20:19:23.386Z"
-// drawer_id: 1
-// guesser_id: 2
-// guesses: null
-// id: 1
-// is_active: true
-// updated_at: "2019-04-16T20:26:04.999Z"
