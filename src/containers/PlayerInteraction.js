@@ -18,6 +18,17 @@ class PlayerInteraction extends Component{
 
   handleGameForms = (ev) => {
     ev.preventDefault()
+    const formType = ev.target.name
+    const formValue = ev.target[formType].value
+    const playerId = JSON.parse(localStorage.getItem('playerData')).playerId
+    const type = 'form'
+
+    fetch(API_ROOT+`/game/${this.props.gameId}`, {
+      method: 'PATCH',
+      headers: HEADERS,
+      body: JSON.stringify({[formType]: formValue, playerId, type})
+    })
+
     if(ev.target.name === "answer"){
       console.log("answerForm check", ev.target.answer.value)
       //triggers the timer channel
@@ -35,18 +46,7 @@ class PlayerInteraction extends Component{
         hideAnswerForm: true
       })
     }
-    else{
-      const formType = ev.target.name
-      const formValue = ev.target[formType].value
-      const playerId = JSON.parse(localStorage.getItem('playerData')).playerId
-      const type = 'form'
 
-      fetch(API_ROOT+`/game/${this.props.gameId}`, {
-        method: 'PATCH',
-        headers: HEADERS,
-        body: JSON.stringify({[formType]: formValue, playerId, type})
-      })
-    }
   }
 
 
