@@ -43,7 +43,7 @@ class Login extends Component {
     return (
       <div className='login'>
         {this.renderRedirect()}
-        <h1>Welcome to Not-Pictionary</h1>
+        <h1>Welcome to Not-Pictionary Online</h1>
         <h4><em>Draw with your friends... or strangers!</em></h4>
         <form onSubmit={this.handleForm}>
           <label>Player Name:

@@ -18,38 +18,28 @@ class PlayerInteraction extends Component{
 
   handleGameForms = (ev) => {
     ev.preventDefault()
-    const formType = ev.target.name
-    const formValue = ev.target[formType].value
-    const playerId = JSON.parse(localStorage.getItem('playerData')).playerId
-    const type = 'form'
-
-    fetch(API_ROOT+`/game/${this.props.gameId}`, {
-      method: 'PATCH',
-      headers: HEADERS,
-      body: JSON.stringify({[formType]: formValue, playerId, type})
-    })
-
     if(ev.target.name === "answer"){
       console.log("answerForm check", ev.target.answer.value)
       //triggers the timer channel
-      const timer = {
-        currentGameId: this.props.gameId
-      }
-      fetch(API_ROOT + '/timer', {
-        method: 'POST',
-        headers: HEADERS,
-        body: JSON.stringify(timer)
-      })
       //timer channel ends
       this.setState({
         answerInput: ev.target.answer.value,
         hideAnswerForm: true
       })
     }
-
+    else{
+      const formType = ev.target.name
+      const formValue = ev.target[formType].value
+      const playerId = JSON.parse(localStorage.getItem('playerData')).playerId
+      const type = 'form'
+      const guessInput = ev.target.guess.value
+      fetch(API_ROOT+`/game/${this.props.gameId}`, {
+        method: 'PATCH',
+        headers: HEADERS,
+        body: JSON.stringify({[formType]: formValue, playerId, type, guessInput})
+      })
+    }
   }
-
-
 
 render(){
   if (this.props.isDrawing) {

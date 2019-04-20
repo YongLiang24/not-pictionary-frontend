@@ -8,7 +8,7 @@ const TopNav = () => {
         <li><NavLink to='/games' activeClassName='active'>All Games</NavLink></li>
         <li><NavLink to='/' activeClassName='active'>Log-out</NavLink></li>
       </ul>
-      <h2>Not-Pictionary</h2>
+      <h2>Not-Pictionary Online</h2>
     </nav>
   )
 }

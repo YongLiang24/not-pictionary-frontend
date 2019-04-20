@@ -61,34 +61,23 @@ class GameView extends Component {
           {/* {this.renderRedirect()} */}
           {this.renderEndGame()}
           <h2>You are... Drawing</h2>
-          <Timer
-            gameOver={this.state.gameOver}
-            endGame={this.endGame}
-            gameId={this.props.gameId}
-            withButton={true}
-          />
-          <Canvas gameId={this.props.gameId} isDrawing={true}/>
-          <PlayerInteraction
-            gameId={this.props.gameId}
-            isDrawing={true}
-            gameOver={this.state.gameOver}
-            endGame={this.endGame}
-          />
-        </div>
-      )
-    }
-    else {
-      return (
-        <div className='gameContainer'>
-          {/* {this.renderRedirect()} */}
-          {this.renderEndGame()}
-          <h2>You are... Guessing</h2>
-          <Timer
-            gameOver={this.state.gameOver}
-            endGame={this.endGame}
-            gameId={this.props.gameId}
-            withButton={false}
-          />
+
+            <Canvas gameId={this.props.gameId} isDrawing={true}/>
+            <PlayerInteraction
+              gameId={this.props.gameId}
+              isDrawing={true}
+              gameOver={this.state.gameOver}
+              endGame={this.endGame}
+            />
+            </div>
+            )
+            }
+            else {
+              return (
+                <div className='gameContainer'>
+                  {this.renderEndGame()}
+                  <h2>You are... Guessing</h2>
+
           <Canvas gameId={this.props.gameId} isDrawing={false} />
           <PlayerInteraction
             gameId={this.props.gameId}

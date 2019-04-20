@@ -53,19 +53,11 @@ class Timer extends Component{
     }
   }
 
-  handleReceivedTimer = (resp) =>{
-    console.log("timer", resp)
-    this.state.interval = setInterval(this.timer, 1000)
-
-  }
   render(){
     if(this.props.withButton){
       return(
         <>
-          <ActionCableConsumer
-            channel={{channel: 'TimerChannel', id:`${this.props.gameId}`}}
-            onReceived={this.handleReceivedTimer}
-          />
+
           <div id="timerBox">Timer: {this.state.minutes} : {this.state.seconds}
 
           </div>
@@ -75,10 +67,7 @@ class Timer extends Component{
     else {
       return(
         <>
-          <ActionCableConsumer
-            channel={{channel: 'TimerChannel', id:`${this.props.gameId}`}}
-            onReceived={this.handleReceivedTimer}
-          />
+
           <div id="timerBox">Timer: {this.state.minutes} : {this.state.seconds}
           </div>
         </>

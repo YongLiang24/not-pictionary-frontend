@@ -87,7 +87,7 @@ class GamesPage extends Component {
               >
                 <h4>Game: {game.id}</h4>
                 <h4>Name: {game.name}</h4>
-                <p>Drawer: {game.drawer_id}</p>
+                <p>Drawer_Id: {game.drawer_id}</p>
                 <button
                   id={game.id}
                   name={game.id}

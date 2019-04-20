@@ -7,20 +7,22 @@ class GuessList extends Component {
      super(props)
      this.state = {
       guessList: [],
-      rejectedGuesses: []
+      rejectedGuesses: [],
+      guessValue: ''
      }
    }
 
   componentDidMount() {
-     fetch(API_ROOT+`/game/${this.props.gameId}`)
-     .then(resp => resp.json())
-     .then(json => {
-       if (json) {
-       this.setState({
-         guessList: json,
-         rejectedGuesses: json
-       })}
-     })
+    const movement = {
+      isClear: "true"
+    }
+    fetch(API_ROOT + `/game/${this.props.gameId}`, {
+      method: 'PATCH',
+      headers: HEADERS,
+      body: JSON.stringify(movement)
+    })
+
+    setInterval(this.updateList, 3000)
    }
 
   handleClick = (ev) => {
@@ -28,52 +30,47 @@ class GuessList extends Component {
      const guessIdx = ev.target.id
      const guessAction = ev.target.name
      const guessText = ev.target.value
-     const type = 'guessStatus'
-
      fetch(API_ROOT+`/game/${this.props.gameId}`,{
        method: 'PATCH',
        headers: HEADERS,
-       body: JSON.stringify({guessIdx, guessAction, guessText, type})
+       body: JSON.stringify({guessIdx, guessAction, guessText})
      })
-      .then(response => response.json())
-      .then(json => {
-        if (json.message == 'Wrong!') {
-          this.setState(prevState => ({
-            rejectedGuesses: [...prevState.rejectedGuesses, json.guessText]
-          })
-        )} else if (json.message == 'Correct!') {
-          this.props.endGame('rightAnswer')
-        }
-      })
 
    }
 
-  handleReceivedGuess = (response) => {
-    console.log(response)
-    if (response.guess) {
-      this.setState(prevState => ({
-        guessList: [...prevState.guessList, response.guess],
-      }))
-    }
-  }
+   updateList = ()=>{
+     fetch(API_ROOT+`/game/${this.props.gameId}`)
+     .then(resp => resp.json())
+     .then(json =>{
+       this.setState({
+         guessList: json.guesses,
+         rejectedGuesses: json.rejectList,
+         guessValue: json.guessInput
+       })
+       if(json.is_won){
+         alert('We have a winner, thank you for playing.')
+         window.location = 'http://localhost:3001/games'
+       }
+     })
+   }
 
-  handleReceivedGuessStatus = (response) => {
-    console.log('receive rejection', response)
-    if (response.message === 'Correct!') {
-      this.props.endGame('rightAnswer')
-    } else if (response.message === 'Wrong!') {
-      this.setState(prevState => ({
-        rejectedGuesses: [...prevState.rejectedGuesses, response.guessText]
-      }))
-    }
-  }
+   handleAccept = (ev) =>{
+
+     const isReject = true
+     // const guessIdx = ev.target.id
+     const guessAction = ev.target.name
+     fetch(API_ROOT+`/game/${this.props.gameId}`,{
+       method: 'PATCH',
+       headers: HEADERS,
+       body: JSON.stringify({isReject, guessAction})
+     })
+
+   }
+
 
   render() {
     if (this.props.isDrawing) {
-      this.acc || (this.acc = <ActionCableConsumer
-        channel={{channel: 'GameFormChannel', id:`${this.props.gameId}`}}
-        onReceived={this.handleReceivedGuess}
-        />)
+      this.acc || (this.acc = null)
       return (
         <Fragment>
           {this.acc}
@@ -85,7 +82,7 @@ class GuessList extends Component {
                   <button
                     id={idx}
                     name='Accept'
-                    onClick={this.handleClick}
+                    onClick={this.handleAccept}
                     value={guess}
                   >
                     Accept
@@ -105,13 +102,7 @@ class GuessList extends Component {
         </Fragment>
       )
     } else {
-      this.acc || (this.acc = <ActionCableConsumer
-        channel={{
-          channel: 'GuessesChannel',
-          id:`${this.props.gameId}`
-        }}
-        onReceived={this.handleReceivedGuessStatus}
-        />)
+      this.acc || (this.acc = null)
       return (
         <Fragment>
           {this.acc}

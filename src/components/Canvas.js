@@ -25,7 +25,7 @@ class Canvas extends React.Component {
       y: 2,
       width: 400, // make this a prop
       height: 400, // make this a prop
-      // guessAnswer: ''
+      emptyArray : []
     }
   }
 
@@ -45,6 +45,28 @@ class Canvas extends React.Component {
         this.state.ctx.fillStyle = 'lightgray';
         this.state.ctx.fillRect(20, 20, this.state.canvas.width, this.state.canvas.height)}
     )
+     setInterval(this.intervalCanvasDraw, 4000)
+
+  }
+
+  intervalCanvasDraw = () =>{
+    fetch('http://localhost:3000/canvas')
+    .then(resp => resp.json())
+    .then(json =>{
+      // console.log('the returned movement',json[0])
+        for(let i=0; i < json[0].currXArray.length; i++) {
+          this.state.ctx.beginPath();
+          this.state.ctx.moveTo(json[0].prevXArray[i], json[0].prevYArray[i]);
+          this.state.ctx.lineTo(json[0].currXArray[i], json[0].currYArray[i]);
+          this.state.ctx.strokeStyle = this.state.x;
+          this.state.ctx.lineWidth = this.state.y;
+          this.state.ctx.stroke();
+          this.state.ctx.closePath();
+        }
+
+    })
+
+
   }
 
   handleMouseMoves = (event, action) => {
@@ -52,7 +74,7 @@ class Canvas extends React.Component {
     //console.log('moving the mouse', action, event)
     this.findxy(action, event)
 
-    if (action !== 'up') {this.sendDrawData()}
+    // if (action !== 'up') {this.sendDrawData()}
 
     // post updated state to API
   }
@@ -66,8 +88,8 @@ class Canvas extends React.Component {
       currYArray: this.state.currYArray,
     }
 
-    fetch(API_ROOT + '/canvas', {
-      method: 'POST',
+    fetch(API_ROOT + '/canvas/1', {
+      method: 'PATCH',
       headers: HEADERS,
       body: JSON.stringify(movement)
     })
@@ -96,8 +118,10 @@ class Canvas extends React.Component {
           }
         }
       )
-    } else if (mouseAction == 'up' || mouseAction == "out") {
+    } else if (mouseAction == 'up') {
         this.setState({flag: false})
+        this.sendDrawData()
+
     } else if (mouseAction == 'move' && this.state.flag) {
       this.setState(
         (state) => {
@@ -138,19 +162,23 @@ class Canvas extends React.Component {
 
   }
 
-  handleReceivedDrawing = response => {
-    //console.log('receiving drawing info', response)
-    // this.draw(response)
-    for(let i=0; i < response.currXArray.length; i++) {
-      this.state.ctx.beginPath();
-      this.state.ctx.moveTo(response.prevXArray[i], response.prevYArray[i]);
-      this.state.ctx.lineTo(response.currXArray[i], response.currYArray[i]);
-      this.state.ctx.strokeStyle = this.state.x;
-      this.state.ctx.lineWidth = this.state.y;
-      this.state.ctx.stroke();
-      this.state.ctx.closePath();
-    }
 
+  handleClear = ()=>{
+    const movement = {
+      prevX: 1,
+      isClear: "true"
+    }
+    fetch(API_ROOT + '/canvas/1', {
+      method: 'PATCH',
+      headers: HEADERS,
+      body: JSON.stringify(movement)
+    })
+    .then(resp => resp.json())
+    .then(json=>{
+      console.log('change currentGameId', json)
+    })
+
+    setTimeout(window.location.reload(), 2000)
   }
 
   render() {
@@ -158,24 +186,26 @@ class Canvas extends React.Component {
       return (
         <Fragment>
           <canvas
-           ref={this.canvasRef}
-           onMouseMove={(event) => this.handleMouseMoves(event, 'move')}
-           onMouseDown={(event) => this.handleMouseMoves(event, 'down')}
-           onMouseUp={(event) => this.handleMouseMoves(event, 'up')}
-           onMouseOut={(event) => this.handleMouseMoves(event, 'out')}
-         />
+            ref={this.canvasRef}
+            onMouseMove={(event) => this.handleMouseMoves(event, 'move')}
+            onMouseDown={(event) => this.handleMouseMoves(event, 'down')}
+            onMouseUp={(event) => this.handleMouseMoves(event, 'up')}
+            onMouseOut={(event) => this.handleMouseMoves(event, 'out')}
+          />
+          <button onClick={this.handleClear}>ClearImage</button>
         </Fragment>
       )
     } else {
       return (
         <Fragment>
-          <ActionCableConsumer
+          {/* <ActionCableConsumer
             channel={{channel: 'CanvasDrawingsChannel', id:`${this.props.gameId}`}}
             onReceived={this.handleReceivedDrawing}
-          />
+          /> */}
           <canvas
             ref={this.canvasRef}
           />
+
         </Fragment>
       )
     }
