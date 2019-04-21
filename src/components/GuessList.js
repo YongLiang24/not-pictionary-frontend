@@ -49,7 +49,7 @@ class GuessList extends Component {
        })
        if(json.is_won){
          alert('We have a winner, thank you for playing.')
-         window.location = 'http://localhost:3001/games'
+         window.location = 'http://localhost:3000/games'
        }
      })
    }

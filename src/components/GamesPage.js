@@ -23,23 +23,21 @@ class GamesPage extends Component {
 
   handleAddGames = (ev) =>{
     ev.preventDefault()
-    console.log('adding new game')
     const playerId = JSON.parse(localStorage.getItem('playerData')).playerId
-    const gameName = ev.target.createGame.value
+    const gameId = ev.target.id
 
-    fetch(`${API_ROOT}/game`, {
-      method: 'POST',
+    fetch(`${API_ROOT}/game/${gameId}`, {
+      method: 'PATCH',
       headers: HEADERS,
-      body: JSON.stringify({playerId, gameName})
+      body: JSON.stringify({playerId})
     })
-      .then(response => response.json())
-      .then(json => {
+      .then(
         this.setState({
-          redirect: true,
-          currentGameId: json.id,
+          redirect:true,
+          currentGameId: gameId,
           currentGameMode: 'draw'
-        })
-      })
+      }))
+
   }
 
   handleJoiningGame = (ev) => {
@@ -70,12 +68,10 @@ class GamesPage extends Component {
     return (
       <Fragment>
         {this.renderRedirect()}
-
-        Game Name:
-        <form onSubmit={this.handleAddGames} >
+        {/* <form onSubmit={this.handleAddGames} >
           <input type='text' placeholder='New game name.' name='createGame' required/>
           <input type='submit' value='create game' />
-        </form>
+        </form> */}
         <h3>Available Games:</h3>
         <div className='game-card-container'>
           {this.state.availableGames.map(game => {
@@ -94,7 +90,16 @@ class GamesPage extends Component {
                   onClick={this.handleJoiningGame}
                   className='button'
                 >
-                  Join Game
+                  Play as a guess role
+                </button>
+
+                <button
+                  id={game.id}
+                  name={game.id}
+                  onClick={this.handleAddGames}
+                  className='button'
+                >
+                  Play as a draw role
                 </button>
                 </div>
               )

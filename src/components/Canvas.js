@@ -47,10 +47,24 @@ class Canvas extends React.Component {
     )
      setInterval(this.intervalCanvasDraw, 4000)
 
+     const movement = {
+       prevX: 1,
+       isClear: "true"
+     }
+     fetch(API_ROOT + '/canvas/1', {
+       method: 'PATCH',
+       headers: HEADERS,
+       body: JSON.stringify(movement)
+     })
+     .then(resp => resp.json())
+     .then(json=>{
+       console.log('change currentGameId', json)
+     })
+
   }
 
   intervalCanvasDraw = () =>{
-    fetch('http://localhost:3000/canvas')
+    fetch(API_ROOT +'/canvas')
     .then(resp => resp.json())
     .then(json =>{
       // console.log('the returned movement',json[0])
