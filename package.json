@@ -8,6 +8,9 @@
     "react-router-dom": "^5.0.0",
     "react-scripts": "2.1.8"
   },
+  "engines": {
+    "node": "11.6.0"
+  },
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
@@ -25,4 +28,5 @@
     "not ie <= 11",
     "not op_mini all"
   ]
+
 }
