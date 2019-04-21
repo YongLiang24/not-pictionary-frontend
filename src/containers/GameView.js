@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react';
 import { API_ROOT, HEADERS } from '../constants';
-import { ActionCableConsumer } from 'react-actioncable-provider';
 import { Redirect } from 'react-router-dom';
 import Canvas from '../components/Canvas';
 import PlayerInteraction from './PlayerInteraction'

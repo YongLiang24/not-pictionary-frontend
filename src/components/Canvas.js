@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react';
-import { ActionCableConsumer } from 'react-actioncable-provider';
 import { API_ROOT, HEADERS } from '../constants';
 // import Cable from './Cable';
 
