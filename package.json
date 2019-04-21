@@ -27,3 +27,11 @@
     "not op_mini all"
   ]
 }
+{
+  "name": "myapp",
+  "description": "a really cool app",
+  "version": "1.0.0",
+  "engines": {
+    "node": "11.6.0"
+  }
+}
